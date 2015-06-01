@@ -1,0 +1,13 @@
+{
+    "name": "fakeller/archinspec",
+    "description": "Architecture dependency definition language",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabian Keller",
+            "email": "hello@fabian-keller.de"
+        }
+    ],
+    "require": {}
+}
