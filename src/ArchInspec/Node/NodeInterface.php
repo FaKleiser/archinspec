@@ -35,11 +35,22 @@ use ArchInspec\Policy\PolicyInterface;
 interface NodeInterface
 {
     /**
-     * A string representation of the architectural node.
+     * A string representation of the architectural node relative to its parent.
+     *
+     * Example: This method would return "Space" for a node with namespace "ArchInspec\Long\Name\Space"
      *
      * @return string
      */
     public function getName();
+
+    /**
+     * A fully qualified string representation of the architectural node.
+     *
+     * Example: "ArchInspec\Long\Name\Space"
+     *
+     * @return string
+     */
+    public function getFQName();
 
     /**
      * Return true if the node has a parent, false otherwise
@@ -74,6 +85,7 @@ interface NodeInterface
      * whether the child exists in any subtrees.
      *
      * @param string $name
+     *
      * @return boolean true if $name is a direct descendant of this node, false otherwise
      */
     public function hasChild($name);
@@ -82,6 +94,7 @@ interface NodeInterface
      * Returns a direct descendant of this node. Assumes that a relative identifier is given.
      *
      * @param string $name
+     *
      * @return NodeInterface the direct descendant with the given identifier
      */
     public function getChild($name);
@@ -90,6 +103,7 @@ interface NodeInterface
      * Attaches the given policy to this node.
      *
      * @param PolicyInterface $policy
+     *
      * @return void
      */
     public function attachPolicy(PolicyInterface $policy);
