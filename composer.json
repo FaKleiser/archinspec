@@ -9,6 +9,12 @@
       "email": "hello@fabian-keller.de"
     }
   ],
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-0": {"": "src/"}
+  },
   "require": {
     "symfony/yaml": "^2.7"
   },
