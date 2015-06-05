@@ -28,42 +28,13 @@ namespace ArchInspec\Policy;
 use ArchInspec\Node\NodeInterface;
 use ArchInspec\Policy\Evaluation\EvaluationResult;
 
-class DenyPolicy implements PolicyInterface
+/**
+ * Policy used to explicitly deny certain namespaces to be used.
+ *
+ * @package ArchInspec\Policy
+ */
+class DenyPolicy extends NamespaceBasedPolicy
 {
-    /** @var string[] namespaces this policy defines */
-    private $namespaces = [];
-
-    public function __construct($namespaces = [])
-    {
-        $this->namespaces = $namespaces;
-    }
-
-    /**
-     * Returns true if $other is part of $namespace
-     *
-     * @param string $namespace
-     * @param string $other
-     *
-     * @return bool
-     */
-    private function namespaceContains($namespace, $other)
-    {
-        return strlen($namespace) <= strlen($other) && strpos($other, $namespace) === 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function affects(NodeInterface $from, NodeInterface $to)
-    {
-        foreach ($this->namespaces as $namespace) {
-            if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * {@inheritdoc}
      */

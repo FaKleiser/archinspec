@@ -27,6 +27,11 @@ namespace ArchInspec\Node;
 
 use ArchInspec\Policy\PolicyInterface;
 
+/**
+ * Represents an architectural node that is used to build the architectural tree. Holds attached policies.
+ *
+ * @package ArchInspec\Node
+ */
 class Node implements NodeInterface
 {
     /** @var string the name of the node */

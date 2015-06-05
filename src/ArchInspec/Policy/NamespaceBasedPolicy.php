@@ -24,27 +24,46 @@
  */
 
 namespace ArchInspec\Policy;
-
 use ArchInspec\Node\NodeInterface;
-use ArchInspec\Policy\Evaluation\EvaluationResult;
 
 /**
- * Policy used to explicitly allow certain namespaces to be used.
+ * Defines an abstract policy class that takes a set of namespaces as argument.
  *
  * @package ArchInspec\Policy
  */
-class AllowPolicy extends NamespaceBasedPolicy
+abstract class NamespaceBasedPolicy implements PolicyInterface
 {
+    /** @var string[] namespaces this policy defines */
+    protected $namespaces = [];
+
+    public function __construct($namespaces = [])
+    {
+        $this->namespaces = $namespaces;
+    }
+
+    /**
+     * Returns true if $other is part of $namespace
+     *
+     * @param string $namespace
+     * @param string $other
+     *
+     * @return bool
+     */
+    protected function namespaceContains($namespace, $other)
+    {
+        return strlen($namespace) <= strlen($other) && strpos($other, $namespace) === 0;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function isAllowed(NodeInterface $from, NodeInterface $to)
+    public function affects(NodeInterface $from, NodeInterface $to)
     {
         foreach ($this->namespaces as $namespace) {
             if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return EvaluationResult::allowed();
+                return true;
             }
         }
-        return EvaluationResult::undefined();
+        return false;
     }
 }
