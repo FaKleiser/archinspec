@@ -26,6 +26,7 @@
 namespace ArchInspec\Policy;
 
 use ArchInspec\Node\NodeInterface;
+use ArchInspec\Policy\Evaluation\EvaluationResult;
 
 class DenyPolicy implements PolicyInterface
 {
@@ -70,9 +71,14 @@ class DenyPolicy implements PolicyInterface
     {
         foreach ($this->namespaces as $namespace) {
             if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return false;
+                return EvaluationResult::denied(sprintf(
+                    "%s has an attached DenyPolicy of namespace %s, preventing use of %s",
+                    $from->getFQName(),
+                    $namespace,
+                    $to->getFQName()
+                ));
             }
         }
-        return null;
+        return EvaluationResult::undefined();
     }
 }

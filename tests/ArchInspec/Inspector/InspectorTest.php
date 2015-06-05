@@ -25,6 +25,8 @@
 
 namespace ArchInspec\Inspector;
 
+use ArchInspec\Policy\Evaluation\EvaluationResult;
+
 class InspectorTest extends \PHPUnit_Framework_TestCase
 {
     public function testSimpleNamespace()
@@ -38,10 +40,8 @@ ArchInspec:
 EOT;
         $inspector = new Inspector();
         $inspector->load($yaml);
-        ini_set("xdebug.var_display_max_depth", 7);
-        var_dump($inspector);
-        $this->assertTrue($inspector->isAllowed('ArchInspec', 'ArchInspec'));
-        $this->assertFalse($inspector->isAllowed('ArchInspec', 'Symfony'));
-        $this->assertNull($inspector->isAllowed('ArchInspec', 'UnknownNamespace'));
+        $this->assertTrue($inspector->isAllowed('ArchInspec', 'ArchInspec')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec', 'Symfony')->equals(EvaluationResult::denied()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec', 'UnknownNamespace')->equals(EvaluationResult::undefined()));
     }
 }

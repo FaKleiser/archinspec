@@ -26,6 +26,7 @@
 namespace ArchInspec\Policy;
 
 use ArchInspec\Node\NodeInterface;
+use ArchInspec\Policy\Evaluation\EvaluationResult;
 
 class AllowPolicy implements PolicyInterface
 {
@@ -70,9 +71,9 @@ class AllowPolicy implements PolicyInterface
     {
         foreach ($this->namespaces as $namespace) {
             if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return true;
+                return EvaluationResult::allowed();
             }
         }
-        return null;
+        return EvaluationResult::undefined();
     }
 }

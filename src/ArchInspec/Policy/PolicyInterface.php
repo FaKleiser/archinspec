@@ -26,6 +26,7 @@
 namespace ArchInspec\Policy;
 
 use ArchInspec\Node\NodeInterface;
+use ArchInspec\Policy\Evaluation\IEvaluationResult;
 
 /**
  * Used to design policies that allow or deny certain architectural constellations.
@@ -48,7 +49,7 @@ interface PolicyInterface
      *
      * @param NodeInterface $from
      * @param NodeInterface $to
-     * @return boolean true if the connection is allowed by this policy, false otherwise
+     * @return IEvaluationResult
      */
     public function isAllowed(NodeInterface $from, NodeInterface $to);
 }

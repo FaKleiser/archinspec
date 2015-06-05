@@ -29,6 +29,7 @@ use ArchInspec\Node\Node;
 use ArchInspec\Node\NodeInterface;
 use ArchInspec\Policy\AllowPolicy;
 use ArchInspec\Policy\DenyPolicy;
+use ArchInspec\Policy\Evaluation\EvaluationResult;
 use ArchInspec\Policy\PolicyInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -116,13 +117,13 @@ class Inspector
 
                 // only return if the result is not undefined
                 $result = $policy->isAllowed($from, $to);
-                if (!is_null($result)) {
+                if (!$result->equals(EvaluationResult::undefined())) {
                     return $result;
                 }
             }
             $node = $node->getParent();
         }
-        return null;
+        return EvaluationResult::undefined();
     }
 
 }
