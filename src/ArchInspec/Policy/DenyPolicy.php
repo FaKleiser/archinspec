@@ -69,7 +69,7 @@ class DenyPolicy implements PolicyInterface
     public function isAllowed(NodeInterface $from, NodeInterface $to)
     {
         foreach ($this->namespaces as $namespace) {
-            if ($this->namespaceContains($namespace, $to)) {
+            if ($this->namespaceContains($namespace, $to->getFQName())) {
                 return false;
             }
         }
