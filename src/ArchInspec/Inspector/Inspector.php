@@ -27,22 +27,50 @@ namespace ArchInspec\Inspector;
 
 use ArchInspec\Node\Node;
 use ArchInspec\Node\NodeInterface;
-use ArchInspec\Policy\AllowPolicy;
-use ArchInspec\Policy\DenyPolicy;
 use ArchInspec\Policy\Evaluation\EvaluationResult;
+use ArchInspec\Policy\Factory\PolicyFactory;
+use ArchInspec\Policy\Factory\PolicyFactoryInterface;
 use ArchInspec\Policy\PolicyInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Parses architecture definition files and can then run queries against the definition to judge whether a connection
+ * between two architectural components is allowed by the definition or not.
+ *
+ * @package ArchInspec\Inspector
+ */
 class Inspector
 {
+    /** @var PolicyFactoryInterface the polict factory */
+    private $policyFactory = null;
+
     /** @var Node */
     private $tree;
 
-    public function __construct()
+    /**
+     * Creates an inspector instance.
+     *
+     * Loads the default factory from {@link PolicyFactory::defaultFactory} if no factory is provided.
+     *
+     * @param PolicyFactoryInterface $policyFactory
+     */
+    public function __construct(PolicyFactoryInterface $policyFactory = null)
     {
         $this->tree = new Node("*");
+
+        if (is_null($policyFactory)) {
+            $policyFactory = PolicyFactory::defaultFactory();
+        }
+        $this->policyFactory = $policyFactory;
     }
 
+    /**
+     * Loads the given architecture definition.
+     *
+     * Will first try to interpet the string as filename, then as YAML string.
+     *
+     * @param string $adl
+     */
     public function load($adl)
     {
         if (file_exists($adl)) {
@@ -70,14 +98,7 @@ class Inspector
      */
     private function factoryPolicy($name, $options)
     {
-        switch ($name) {
-            case 'allow':
-                return new AllowPolicy($options);
-            case 'deny':
-                return new DenyPolicy($options);
-            default:
-                throw new \RuntimeException("Cannot create unknown policy {$name}!");
-        }
+        return $this->policyFactory->factory($name, $options);
     }
 
     /**
@@ -103,6 +124,13 @@ class Inspector
         return $parent;
     }
 
+    /**
+     * Resolves all hierarchical policies to determine whether the connection between $from and $to is valid.
+     *
+     * @param string $from
+     * @param string $to
+     * @return \ArchInspec\Policy\Evaluation\IEvaluationResult
+     */
     public function isAllowed($from, $to)
     {
         $to = $this->getOrCreateNode($to);
@@ -125,5 +153,4 @@ class Inspector
         }
         return EvaluationResult::undefined();
     }
-
 }

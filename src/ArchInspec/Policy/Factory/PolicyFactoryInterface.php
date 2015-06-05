@@ -23,31 +23,23 @@
  * SOFTWARE.
  */
 
-namespace ArchInspec\Policy;
+namespace ArchInspec\Policy\Factory;
 
-use ArchInspec\Node\NodeInterface;
-use ArchInspec\Policy\Evaluation\EvaluationResult;
+use ArchInspec\Policy\PolicyInterface;
 
 /**
- * Policy used to explicitly allow certain namespaces to be used.
+ * Used to create {@link PolicyInterface} factories.
  *
- * @package ArchInspec\Policy
+ * @package ArchInspec\Policy\Factory
  */
-class AllowPolicy extends NamespaceBasedPolicy
+interface PolicyFactoryInterface
 {
-    /** The name of the policy, as used in architecture description files */
-    const POLICY_NAME = "allow";
-
     /**
-     * {@inheritdoc}
+     * Factories the $name policy with the given $options.
+     *
+     * @param string $name
+     * @param mixed $options
+     * @return PolicyInterface
      */
-    public function isAllowed(NodeInterface $from, NodeInterface $to)
-    {
-        foreach ($this->namespaces as $namespace) {
-            if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return EvaluationResult::allowed();
-            }
-        }
-        return EvaluationResult::undefined();
-    }
+    public function factory($name, $options = null);
 }

@@ -35,6 +35,9 @@ use ArchInspec\Policy\Evaluation\EvaluationResult;
  */
 class DenyPolicy extends NamespaceBasedPolicy
 {
+    /** The name of the policy, as used in architecture description files */
+    const POLICY_NAME = "deny";
+
     /**
      * {@inheritdoc}
      */
