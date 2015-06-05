@@ -44,4 +44,70 @@ EOT;
         $this->assertTrue($inspector->isAllowed('ArchInspec', 'Symfony')->equals(EvaluationResult::denied()));
         $this->assertTrue($inspector->isAllowed('ArchInspec', 'UnknownNamespace')->equals(EvaluationResult::undefined()));
     }
+
+    public function testNestedPackages()
+    {
+        $yaml = <<<EOT
+ArchInspec\Inspector:
+    allow:
+        - ArchInspec
+        - Symfony\Yaml
+    deny:
+        - Company
+        - Denied\Package
+EOT;
+        $inspector = new Inspector();
+        $inspector->load($yaml);
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'ArchInspec')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Symfony\Yaml')->equals(EvaluationResult::allowed()));
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Company')->equals(EvaluationResult::denied()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Denied\Package')->equals(EvaluationResult::denied()));
+    }
+
+    public function testOneLevelPolicyInheritance()
+    {
+        $yaml = <<<EOT
+ArchInspec:
+    allow:
+        - ArchInspec
+        - Symfony\Yaml
+    deny:
+        - Company
+        - Denied\Package
+EOT;
+        $inspector = new Inspector();
+        $inspector->load($yaml);
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'ArchInspec\Inspector')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'ArchInspec')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Symfony\Yaml')->equals(EvaluationResult::allowed()));
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Company')->equals(EvaluationResult::denied()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Inspector', 'Denied\Package')->equals(EvaluationResult::denied()));
+    }
+
+    public function testMultiLevelPolicyInheritance()
+    {
+        $yaml = <<<EOT
+ArchInspec:
+    allow:
+        - First\Package
+ArchInspec\Sub:
+    allow:
+        - Second\Package
+EOT;
+        $inspector = new Inspector();
+        $inspector->load($yaml);
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub', 'Second\Package')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub', 'First\Package')->equals(EvaluationResult::allowed()));
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub\Deeply\Nested\Package', 'Second\Package')->equals(EvaluationResult::allowed()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub\Deeply\Nested\Package', 'First\Package')->equals(EvaluationResult::allowed()));
+
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub\Deeply\Nested\Package', 'Second')->equals(EvaluationResult::undefined()));
+        $this->assertTrue($inspector->isAllowed('ArchInspec\Sub\Deeply\Nested\Package', 'First')->equals(EvaluationResult::undefined()));
+    }
 }
