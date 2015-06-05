@@ -139,7 +139,7 @@ class Inspector
         while (!is_null($node)) {
             foreach ($node->getPolicies() as $policy) {
                 // check that policy affects $to
-                if (!$policy->affects($node, $to)) {
+                if (!$policy->affects($from, $to)) {
                     continue;
                 }
 
