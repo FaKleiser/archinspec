@@ -98,4 +98,13 @@ class EvaluationResult implements IEvaluationResult
     {
         return $this->result === $other->getResult();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
 }

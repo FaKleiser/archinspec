@@ -8,7 +8,8 @@
 
 namespace ArchInspec\Policy\Evaluation;
 
-interface IEvaluationResult {
+interface IEvaluationResult
+{
     /** Represents allowed policy evaluation */
     const ALLOWED = 1;
     /** Represents denied policy evaluation */
@@ -31,4 +32,11 @@ interface IEvaluationResult {
      * @return int
      */
     public function getResult();
+
+    /**
+     * Returns a reasoning message for the policy evaluation result.
+     *
+     * @return string
+     */
+    public function getMessage();
 }
