@@ -25,48 +25,24 @@
 
 namespace ArchInspec\Command;
 
-use ArchInspec\PhpDA\ReferenceValidator;
-use PhpDA\Command\Config;
+use ArchInspec\Application\AIConfig;
+use ArchInspec\Application\ArchInspec;
 use PhpDA\Command\MessageInterface;
-use PhpDA\Command\Strategy\UsageFactory;
-use PhpDA\Parser\Visitor\Required\DeclaredNamespaceCollector;
-use PhpDA\Parser\Visitor\Required\MetaNamespaceCollector;
-use PhpDA\Parser\Visitor\Required\UsedNamespaceCollector;
-use PhpDA\Parser\Visitor\SuperglobalCollector;
-use PhpDA\Parser\Visitor\TagCollector;
-use PhpDA\Writer\Strategy\Html;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Parser;
 
 class InspectCommand extends Command
 {
     const EXIT_SUCCESS = 0, EXIT_VIOLATION = 1;
-
-    /** @var string */
-    private $configFilePath;
-
-    /** @var Parser */
-    private $configParser;
-
-
-    /**
-     * @param Parser $parser
-     */
-    public function setConfigParser(Parser $parser)
-    {
-        $this->configParser = $parser;
-    }
 
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $defaultConfig = __DIR__ . '/../../archinspec.yml.dist';
-
+        $defaultConfig = __DIR__ . '/../../../archinspec.yml.dist';
         $this->addArgument('config', InputArgument::OPTIONAL, MessageInterface::ARGUMENT_CONFIG, $defaultConfig);
     }
 
@@ -75,54 +51,19 @@ class InspectCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->createPhpDAConfig($input);
+        $configFile = $input->getArgument('config');
 
         $output->writeln($this->getDescription() . PHP_EOL);
-        $output->writeln(MessageInterface::READ_CONFIG_FROM . $this->configFilePath . PHP_EOL);
+        $output->writeln(MessageInterface::READ_CONFIG_FROM . $configFile . PHP_EOL);
 
-        $usageFactory = new UsageFactory();
-        $usage = $usageFactory->create();
-        $usage->setOptions(['config' => $config]);
-        if ($usage->execute()) {
+        $config = AIConfig::fromYamlFile($configFile);
+        $archInspec = new ArchInspec($config);
+        if ($archInspec->analyze()) {
             return self::EXIT_SUCCESS;
         } else {
             return self::EXIT_VIOLATION;
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @throws \InvalidArgumentException
-     * @return Config
-     */
-    private function createPhpDAConfig(InputInterface $input)
-    {
-        $this->configFilePath = realpath($input->getArgument('config'));
-        $config = $this->configParser->parse(file_get_contents($this->configFilePath));
 
-        if (!is_array($config)) {
-            throw new \InvalidArgumentException('Configuration is invalid');
-        }
-
-        return new Config([
-            'mode' => Config::USAGE_MODE,
-            'source' => $config['source'],
-            'ignore' => $config['ignore'],
-            'formatter' => Html::class,
-            'target' => $config['target'],
-            'filePattern' => $config['filePattern'],
-            'groupLength' => 2,
-            'visitor' => [
-                TagCollector::class,
-                SuperglobalCollector::class,
-            ],
-            'visitorOptions' => [
-                DeclaredNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                MetaNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                UsedNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                TagCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-            ],
-            'referenceValidator' => ReferenceValidator::class,
-        ]);
-    }
 }

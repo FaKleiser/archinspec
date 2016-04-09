@@ -33,6 +33,18 @@ use PhpParser\Node\Name;
 
 class ReferenceValidator implements ValidatorInterface
 {
+    /**
+     * Note: the use of the singleton pattern here is highly discouraged. However, there is currently an issue in the
+     * phpDependencyAnalysis library that does not allow to inject any dependencies (either through constructors or
+     * setters) into the reference validator. The singelton currently allows to do that, but the dependencies should be
+     * properly injected as soon as the issue in phpDA is resolved.
+     *
+     * @see https://github.com/mamuz/PhpDependencyAnalysis/issues/22
+     *
+     * @var  ReferenceValidator - holds the singleton instance of the validator.
+     */
+    private static $instance;
+
     /** @var Inspector */
     private $inspector;
     /** @var IEvaluationResult */
@@ -40,8 +52,32 @@ class ReferenceValidator implements ValidatorInterface
 
     public function __construct()
     {
-        $this->inspector = new Inspector();
-        $this->inspector->load('architecture.yml');
+        if (!is_null(self::$instance)) {
+            $this->inspector = self::$instance->inspector;
+        }
+        self::$instance = $this;
+    }
+
+    /**
+     * @deprecated this method must be replaced in the near future with proper dependency injection techniques! See {@link ReferenceValidator#instance} for more information.
+     * @return ReferenceValidator
+     */
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Set the inspector to be used for the analysis.
+     *
+     * @param Inspector $inspector
+     */
+    public function setInspector($inspector)
+    {
+        $this->inspector = $inspector;
     }
 
     /**

@@ -41,7 +41,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Inspector
 {
-    /** @var PolicyFactoryInterface the polict factory */
+    /** @var PolicyFactoryInterface the policy factory */
     private $policyFactory = null;
 
     /** @var Node */

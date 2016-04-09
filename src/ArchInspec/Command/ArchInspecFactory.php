@@ -26,7 +26,6 @@
 namespace ArchInspec\Command;
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Yaml\Parser;
 
 class ArchInspecFactory
 {
@@ -48,7 +47,6 @@ class ArchInspecFactory
 
         $command->setHelp(CliMessage::HELP);
         $command->setDescription(CliMessage::NAME . ' (' . CliMessage::VERSION . ')');
-        $command->setConfigParser(new Parser());
         return $command;
     }
 }

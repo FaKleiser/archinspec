@@ -1,0 +1,11 @@
+ArchInspec\Command:
+  allow:
+    - Symfony\Component\Console
+
+ArchInspec\Node:
+  allow:
+    - ArchInspec\Policy
+
+ArchInspec\Policy:
+  deny:
+    - ArchInspec\Node

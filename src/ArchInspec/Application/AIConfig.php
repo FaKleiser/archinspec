@@ -54,8 +54,9 @@ class AIConfig
                 $this->{$setter}($value);
             } elseif (property_exists($this, $key)) {
                 $this->{$key} = $value;
+            } else {
+                throw new \RuntimeException(sprintf("Got config key '%s' which is not supported in the config class! As this should not have happened, please file a bug.", $key));
             }
-            throw new \RuntimeException(sprintf("Got config key '%s' which is not supported in the config class! As this should not have happened, please file a bug.", $key));
         }
     }
 
