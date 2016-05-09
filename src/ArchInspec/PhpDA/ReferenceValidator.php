@@ -28,6 +28,8 @@ namespace ArchInspec\PhpDA;
 use ArchInspec\Inspector\Inspector;
 use ArchInspec\Policy\Evaluation\EvaluationResult;
 use ArchInspec\Policy\Evaluation\IEvaluationResult;
+use ArchInspec\Report\PolicyViolation;
+use ArchInspec\Report\ViolationCollectorInterface;
 use PhpDA\Reference\ValidatorInterface;
 use PhpParser\Node\Name;
 
@@ -49,11 +51,14 @@ class ReferenceValidator implements ValidatorInterface
     private $inspector;
     /** @var IEvaluationResult */
     private $lastResult;
+    /** @var ViolationCollectorInterface */
+    private $collector;
 
     public function __construct()
     {
         if (!is_null(self::$instance)) {
             $this->inspector = self::$instance->inspector;
+            $this->collector = self::$instance->collector;
         }
         self::$instance = $this;
     }
@@ -80,12 +85,20 @@ class ReferenceValidator implements ValidatorInterface
         $this->inspector = $inspector;
     }
 
+    public function setViolationCollector(ViolationCollectorInterface $collector)
+    {
+        $this->collector = $collector;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function isValidBetween(Name $from, Name $to)
     {
         $this->lastResult = $this->inspector->isAllowed($from->toString(), $to->toString());
+        if (!is_null($this->collector) && $this->lastResult->equals(EvaluationResult::denied())) {
+            $this->collector->report(new PolicyViolation($from, $to, $this->lastResult));
+        }
         return $this->lastResult->equals(EvaluationResult::allowed());
     }
 

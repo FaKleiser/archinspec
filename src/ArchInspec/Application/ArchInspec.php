@@ -27,6 +27,8 @@ namespace ArchInspec\Application;
 
 use ArchInspec\Inspector\Inspector;
 use ArchInspec\PhpDA\ReferenceValidator;
+use ArchInspec\Report\PolicyViolationReport;
+use ArchInspec\Report\Writer\ReportWriterInterface;
 use PhpDA\Command\Config;
 use PhpDA\Command\Strategy\UsageFactory;
 use PhpDA\Parser\Visitor\Required\DeclaredNamespaceCollector;
@@ -54,7 +56,7 @@ class ArchInspec
      *
      * @return bool true if the architecture raised no violation, false if there were violations
      */
-    public function analyze()
+    public function analyze(ReportWriterInterface $writer)
     {
         $config = $this->createPhpDAConfig();
 
@@ -62,10 +64,18 @@ class ArchInspec
         $usage = $usageFactory->create();
         $usage->setOptions(['config' => $config]);
 
+        // collect violation report
+        $report = new PolicyViolationReport();
+
         $inspector = new Inspector();
         $inspector->load($this->config->getArchitecture());
         ReferenceValidator::getInstance()->setInspector($inspector);
-        return $usage->execute();
+        ReferenceValidator::getInstance()->setViolationCollector($report);
+        $result = $usage->execute();
+
+        // write report
+        $writer->write($report);
+        return $result;
     }
 
     /**

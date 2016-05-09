@@ -27,6 +27,7 @@ namespace ArchInspec\Command;
 
 use ArchInspec\Application\AIConfig;
 use ArchInspec\Application\ArchInspec;
+use ArchInspec\Report\Writer\ConsoleWriter;
 use PhpDA\Command\MessageInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -58,7 +59,7 @@ class InspectCommand extends Command
 
         $config = AIConfig::fromYamlFile($configFile);
         $archInspec = new ArchInspec($config);
-        if ($archInspec->analyze()) {
+        if ($archInspec->analyze(new ConsoleWriter($output))) {
             return self::EXIT_SUCCESS;
         } else {
             return self::EXIT_VIOLATION;
