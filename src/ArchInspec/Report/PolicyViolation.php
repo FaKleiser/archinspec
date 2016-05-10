@@ -67,10 +67,24 @@ class PolicyViolation
     }
 
     /**
-     * @return IEvaluationResult
+     * Returns a string describing why the policy was violated
+     *
+     * @return string
      */
     public function getCause()
     {
-        return $this->cause;
+        return $this->cause->getMessage();
+    }
+
+    /**
+     * Returns a string describing why the policy exists at all.
+     *
+     * A reasoning may not exist and in that case the method will return null.
+     *
+     * @return null|string
+     */
+    public function getReason()
+    {
+        return $this->cause->causedBy()->getReason();
     }
 }

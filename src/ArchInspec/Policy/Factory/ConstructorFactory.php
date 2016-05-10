@@ -53,13 +53,13 @@ class ConstructorFactory extends AbstractPolicyFactory
     /**
      * {@inheritdoc}
      */
-    public function factory($name, $target = null, array $options = null)
+    public function factory($name, $target = null, array $options = null, $reason = null)
     {
         if (!in_array($name, $this->supportedPolicies())) {
             throw new \RuntimeException(sprintf("This ConstructorFactory can only factory policies of types [%s], but type %s was requested!", join(",", $this->names), $name));
         }
         $class = $this->policyClassName;
-        return new $class($target, $options);
+        return new $class($target, $options, $reason);
     }
 
 

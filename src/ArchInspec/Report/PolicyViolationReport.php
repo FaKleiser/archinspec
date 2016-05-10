@@ -36,7 +36,11 @@ class PolicyViolationReport implements ViolationCollectorInterface
      */
     public function report(PolicyViolation $violation)
     {
-        $this->violations[] = $violation;
+        $affects = $violation->getFrom()->toString();
+        if (!isset($this->violations[$affects])) {
+            $this->violations[$affects] = [];
+        }
+        $this->violations[$affects][] = $violation;
     }
 
     /**
@@ -50,9 +54,9 @@ class PolicyViolationReport implements ViolationCollectorInterface
     }
 
     /**
-     * Returns all violations of the report.
+     * Returns all violations of the report, group by the "from" part.
      *
-     * @return PolicyViolation[]
+     * @return PolicyViolation[][]
      */
     public function getViolations()
     {

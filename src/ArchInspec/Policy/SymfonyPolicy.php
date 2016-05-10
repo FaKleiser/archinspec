@@ -86,7 +86,7 @@ class SymfonyPolicy extends AbstractPolicy
                 }
             }
         }
-        return EvaluationResult::undefined($this);
+        return EvaluationResult::undefined();
     }
 
     private function regexMatchesNode($regex, NodeInterface $node)

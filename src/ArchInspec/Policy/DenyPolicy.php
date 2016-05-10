@@ -51,6 +51,6 @@ class DenyPolicy extends NamespaceBasedPolicy
                 ));
             }
         }
-        return EvaluationResult::undefined($this);
+        return EvaluationResult::undefined();
     }
 }

@@ -25,6 +25,7 @@
 
 namespace ArchInspec\Report\Writer;
 
+use ArchInspec\Report\PolicyViolation;
 use ArchInspec\Report\PolicyViolationReport;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -53,9 +54,16 @@ class ConsoleWriter implements ReportWriterInterface
         }
 
         $this->out->writeln(sprintf("<error>%d policy violations found!</error>", count($report->getViolations())));
-        foreach ($report->getViolations() as $violation) {
-            $this->out->writeln(sprintf("<info>%s uses %s</info>", $violation->getFrom(), $violation->getTo()));
-            $this->out->writeln($violation->getCause()->getMessage());
+        foreach ($report->getViolations() as $from => $violations) {
+            $this->out->writeln(sprintf("<comment>%s has %d violations:</comment>", $from, count($violations)));
+            foreach ($violations as $violation) {
+                /** @var PolicyViolation $violation */
+                $this->out->writeln(sprintf("  uses <comment>%s</comment>: %s", $violation->getTo(), $violation->getCause()));
+                if (!is_null($violation->getReason())) {
+                    $this->out->writeln(sprintf("  > Reason: %s", $violation->getReason()));
+                }
+            }
+            $this->out->writeln("");
         }
     }
 }

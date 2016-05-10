@@ -30,7 +30,6 @@ use ArchInspec\Node\NodeInterface;
 use ArchInspec\Policy\Evaluation\EvaluationResult;
 use ArchInspec\Policy\Factory\PolicyFactory;
 use ArchInspec\Policy\Factory\PolicyFactoryInterface;
-use ArchInspec\Policy\PolicyInterface;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -105,7 +104,7 @@ class Inspector
                     unset($options['reason']);
                 }
 
-                $node->attachPolicy($this->policyFactory->factory($policyName, $target, $options));
+                $node->attachPolicy($this->policyFactory->factory($policyName, $target, $options, $reason));
             }
         }
     }

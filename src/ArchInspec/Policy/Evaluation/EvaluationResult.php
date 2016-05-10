@@ -53,6 +53,7 @@ class EvaluationResult implements IEvaluationResult
     {
         $this->result = $result;
         $this->message = $message;
+        $this->causedBy = $causedBy;
     }
 
     /**

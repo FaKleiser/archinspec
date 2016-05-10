@@ -48,6 +48,6 @@ class AllowPolicy extends NamespaceBasedPolicy
                 return EvaluationResult::allowed($this);
             }
         }
-        return EvaluationResult::undefined($this);
+        return EvaluationResult::undefined();
     }
 }

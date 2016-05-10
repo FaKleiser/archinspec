@@ -38,10 +38,11 @@ interface PolicyFactoryInterface
      * @param string $name the name of the policy to create
      * @param null|string|string[] $target the targets to apply the policy to
      * @param mixed[] $options
+     * @param string $reason
      *
      * @return PolicyInterface
      */
-    public function factory($name, $target = null, array $options = null);
+    public function factory($name, $target = null, array $options = null, $reason = null);
 
     /**
      * Reveals which policies the factory is able to instantiate
