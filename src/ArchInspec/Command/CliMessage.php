@@ -36,4 +36,6 @@ interface CliMessage
     const HELP = 'Please visit <info>https://github.com/fakeller/archinspec</info> for detailed informations.';
 
     const ARGUMENT_CONFIG = 'Path to yaml configuration file.';
+
+    const READ_CONFIG_FROM = 'Configuration read from ';
 }

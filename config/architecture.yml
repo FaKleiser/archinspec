@@ -1,5 +1,7 @@
 ArchInspec:
   - policy: siblings
+  - deny: PhpDA
+    reason: Do not use PhpDA anywhere, except where allowed to reduce coupling.
 
 ArchInspec\Application:
   - allow: ArchInspec\Inspector
@@ -15,3 +17,11 @@ ArchInspec\Node:
 
 ArchInspec\Policy:
   - allow: ArchInspec\Node\NodeInterface
+
+
+ArchInspec\Application\ArchInspec:
+  - allow: PhpDA
+    reason: We'll bind to PhpDA inside ArchInspec
+ArchInspec\PhpDA\ReferenceValidator:
+  - allow: PhpDA\Reference\ValidatorInterface
+    reason: This implements the reference validator to be used by PhpDA

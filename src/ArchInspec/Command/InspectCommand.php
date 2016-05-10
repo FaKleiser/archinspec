@@ -44,7 +44,7 @@ class InspectCommand extends Command
     protected function configure()
     {
         $defaultConfig = __DIR__ . '/../../../archinspec.yml.dist';
-        $this->addArgument('config', InputArgument::OPTIONAL, MessageInterface::ARGUMENT_CONFIG, $defaultConfig);
+        $this->addArgument('config', InputArgument::OPTIONAL, CliMessage::ARGUMENT_CONFIG, $defaultConfig);
     }
 
     /**
@@ -55,7 +55,7 @@ class InspectCommand extends Command
         $configFile = $input->getArgument('config');
 
         $output->writeln($this->getDescription() . PHP_EOL);
-        $output->writeln(MessageInterface::READ_CONFIG_FROM . $configFile . PHP_EOL);
+        $output->writeln(CliMessage::READ_CONFIG_FROM . $configFile . PHP_EOL);
 
         $config = AIConfig::fromYamlFile($configFile);
         $archInspec = new ArchInspec($config);
