@@ -27,6 +27,7 @@ namespace ArchInspec\Policy\Factory;
 
 use ArchInspec\Policy\AllowPolicy;
 use ArchInspec\Policy\DenyPolicy;
+use ArchInspec\Policy\SiblingPolicy;
 use ArchInspec\Policy\SymfonyPolicy;
 
 /**
@@ -56,6 +57,7 @@ class PolicyFactory extends AbstractPolicyFactory
         $factory = new static();
         $factory->addFactory(new ConstructorFactory(AllowPolicy::POLICY_NAME, AllowPolicy::class));
         $factory->addFactory(new ConstructorFactory(DenyPolicy::POLICY_NAME, DenyPolicy::class));
+        $factory->addFactory(new ConstructorFactory(SiblingPolicy::POLICY_NAME, SiblingPolicy::class));
         $factory->addFactory(new ConstructorFactory(SymfonyPolicy::POLICY_NAME, SymfonyPolicy::class));
         return $factory;
     }

@@ -1,9 +1,17 @@
+ArchInspec:
+  - policy: siblings
+
+ArchInspec\Application:
+  - allow: ArchInspec\Inspector
+
 ArchInspec\Command:
   - allow: Symfony\Component\Console
+
+ArchInspec\Inspector:
+  - allow: ArchInspec
 
 ArchInspec\Node:
   - allow: ArchInspec\Policy
 
 ArchInspec\Policy:
-  - deny: ArchInspec\Node
-    reason: The node must not use the policy at all costs! This was decided in #43
+  - allow: ArchInspec\Node\NodeInterface
