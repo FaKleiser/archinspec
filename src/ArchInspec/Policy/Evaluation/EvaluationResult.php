@@ -24,6 +24,7 @@
  */
 
 namespace ArchInspec\Policy\Evaluation;
+use ArchInspec\Policy\PolicyInterface;
 
 /**
  * Represents the result of a {@link PolicyInterface} evaluation on a {link NodeInterface}.
@@ -37,14 +38,17 @@ class EvaluationResult implements IEvaluationResult
     private $result;
     /** @var  string stores the result message */
     private $message;
+    /** @var PolicyInterface policy that caused this result */
+    private $causedBy;
 
     /**
      * Constructs the evaluation result. Private constructor prevents invalid usage.
      *
      * @param int $result
+     * @param PolicyInterface $causedBy
      * @param string $message
      */
-    private function __construct($result, $message = "")
+    private function __construct($result, PolicyInterface $causedBy, $message = "")
     {
         $this->result = $result;
         $this->message = $message;
@@ -54,33 +58,36 @@ class EvaluationResult implements IEvaluationResult
      * Creates an evaluation result representing an allowed usage.
      *
      * @param string $message
+     * @param PolicyInterface $causedBy
      * @return IEvaluationResult
      */
-    public static function allowed($message = "")
+    public static function allowed(PolicyInterface $causedBy, $message = "")
     {
-        return new static(self::ALLOWED, $message);
+        return new static(self::ALLOWED, $causedBy, $message);
     }
 
     /**
      * Creates an evaluation result representing a denied usage.
      *
      * @param string $message
+     * @param PolicyInterface $causedBy
      * @return IEvaluationResult
      */
-    public static function denied($message = "")
+    public static function denied(PolicyInterface $causedBy, $message = "")
     {
-        return new static(self::DENIED, $message);
+        return new static(self::DENIED, $causedBy, $message);
     }
 
     /**
      * Creates an evaluation result representing an undefined usage.
      *
      * @param string $message
+     * @param PolicyInterface $causedBy
      * @return IEvaluationResult
      */
-    public static function undefined($message = "")
+    public static function undefined(PolicyInterface $causedBy, $message = "")
     {
-        return new static(self::UNDEFINED, $message);
+        return new static(self::UNDEFINED, $causedBy, $message);
     }
 
     /**
@@ -107,4 +114,13 @@ class EvaluationResult implements IEvaluationResult
         return $this->message;
     }
 
+    /**
+     * Returns the policy that caused this result.
+     *
+     * @return PolicyInterface
+     */
+    public function causedBy()
+    {
+        return $this->causedBy;
+    }
 }

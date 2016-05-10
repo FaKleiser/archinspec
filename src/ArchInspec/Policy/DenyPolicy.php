@@ -30,8 +30,6 @@ use ArchInspec\Policy\Evaluation\EvaluationResult;
 
 /**
  * Policy used to explicitly deny certain namespaces to be used.
- *
- * @package ArchInspec\Policy
  */
 class DenyPolicy extends NamespaceBasedPolicy
 {
@@ -43,9 +41,9 @@ class DenyPolicy extends NamespaceBasedPolicy
      */
     public function isAllowed(NodeInterface $from, NodeInterface $to)
     {
-        foreach ($this->namespaces as $namespace) {
+        foreach ($this->getTargets() as $namespace) {
             if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return EvaluationResult::denied(sprintf(
+                return EvaluationResult::denied($this, sprintf(
                     "%s has an attached DenyPolicy of namespace %s, preventing use of %s",
                     $from->getFQName(),
                     $namespace,
@@ -53,6 +51,6 @@ class DenyPolicy extends NamespaceBasedPolicy
                 ));
             }
         }
-        return EvaluationResult::undefined();
+        return EvaluationResult::undefined($this);
     }
 }

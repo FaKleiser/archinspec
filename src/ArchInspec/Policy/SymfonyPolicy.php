@@ -30,10 +30,8 @@ use ArchInspec\Policy\Evaluation\EvaluationResult;
 
 /**
  * Contains a policy for Symfony projects.
- *
- * @package ArchInspec\Policy
  */
-class SymfonyPolicy implements PolicyInterface
+class SymfonyPolicy extends AbstractPolicy
 {
 
     const POLICY_NAME = "symfony";
@@ -84,20 +82,15 @@ class SymfonyPolicy implements PolicyInterface
             // check all allowed namespaces
             foreach ($allowed as $namespace) {
                 if ($this->namespaceContains($namespace, $to->getFQName())) {
-                    return EvaluationResult::allowed();
+                    return EvaluationResult::allowed($this);
                 }
             }
         }
-        return EvaluationResult::undefined();
+        return EvaluationResult::undefined($this);
     }
 
     private function regexMatchesNode($regex, NodeInterface $node)
     {
         return (bool)preg_match("/{$regex}/i", $node->getFQName());
-    }
-
-    protected function namespaceContains($namespace, $other)
-    {
-        return strlen($namespace) <= strlen($other) && strpos($other, $namespace) === 0;
     }
 }

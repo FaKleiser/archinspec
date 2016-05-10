@@ -8,6 +8,8 @@
 
 namespace ArchInspec\Policy\Evaluation;
 
+use ArchInspec\Policy\PolicyInterface;
+
 interface IEvaluationResult
 {
     /** Represents allowed policy evaluation */
@@ -29,7 +31,7 @@ interface IEvaluationResult
     /**
      * Returns the result type. The returned integer is a value of the class constants of {@link IEvaluationResult}.
      *
-     * @return int
+     * @return int code
      */
     public function getResult();
 
@@ -39,4 +41,11 @@ interface IEvaluationResult
      * @return string
      */
     public function getMessage();
+
+    /**
+     * Returns the policy that caused this result.
+     *
+     * @return PolicyInterface
+     */
+    public function causedBy();
 }

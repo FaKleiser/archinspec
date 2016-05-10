@@ -52,4 +52,11 @@ interface PolicyInterface
      * @return IEvaluationResult
      */
     public function isAllowed(NodeInterface $from, NodeInterface $to);
+
+    /**
+     * If available, returns a reason WHY the policy exists.
+     *
+     * @return null|string
+     */
+    public function getReason();
 }

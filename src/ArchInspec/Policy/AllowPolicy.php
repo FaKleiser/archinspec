@@ -43,11 +43,11 @@ class AllowPolicy extends NamespaceBasedPolicy
      */
     public function isAllowed(NodeInterface $from, NodeInterface $to)
     {
-        foreach ($this->namespaces as $namespace) {
+        foreach ($this->getTargets() as $namespace) {
             if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return EvaluationResult::allowed();
+                return EvaluationResult::allowed($this);
             }
         }
-        return EvaluationResult::undefined();
+        return EvaluationResult::undefined($this);
     }
 }
