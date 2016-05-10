@@ -96,10 +96,10 @@ class ArchInspec
                 SuperglobalCollector::class,
             ],
             'visitorOptions' => [
-                DeclaredNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                MetaNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                UsedNamespaceCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
-                TagCollector::class => ['minDepth' => 3, 'sliceLength' => 3],
+                DeclaredNamespaceCollector::class => ['minDepth' => 2, 'sliceLength' => 20],
+                MetaNamespaceCollector::class => ['minDepth' => 2, 'sliceLength' => 20],
+                UsedNamespaceCollector::class => ['minDepth' => 2, 'sliceLength' => 20],
+                TagCollector::class => ['minDepth' => 2, 'sliceLength' => 20],
             ],
             'referenceValidator' => ReferenceValidator::class,
         ]);
