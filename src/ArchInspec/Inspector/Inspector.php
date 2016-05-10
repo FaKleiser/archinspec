@@ -173,7 +173,7 @@ class Inspector
 
                 // only return if the result is not undefined
                 $result = $policy->isAllowed($from, $to);
-                if (!$result->equals(EvaluationResult::undefined())) {
+                if (!$result->isUndefined()) {
                     return $result;
                 }
             }

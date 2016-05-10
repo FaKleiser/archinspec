@@ -24,6 +24,7 @@
  */
 
 namespace ArchInspec\Policy\Evaluation;
+
 use ArchInspec\Policy\PolicyInterface;
 
 /**
@@ -48,7 +49,7 @@ class EvaluationResult implements IEvaluationResult
      * @param PolicyInterface $causedBy
      * @param string $message
      */
-    private function __construct($result, PolicyInterface $causedBy, $message = "")
+    private function __construct($result, PolicyInterface $causedBy = null, $message = "")
     {
         $this->result = $result;
         $this->message = $message;
@@ -82,12 +83,11 @@ class EvaluationResult implements IEvaluationResult
      * Creates an evaluation result representing an undefined usage.
      *
      * @param string $message
-     * @param PolicyInterface $causedBy
      * @return IEvaluationResult
      */
-    public static function undefined(PolicyInterface $causedBy, $message = "")
+    public static function undefined($message = "")
     {
-        return new static(self::UNDEFINED, $causedBy, $message);
+        return new static(self::UNDEFINED, null, $message);
     }
 
     /**
@@ -101,10 +101,27 @@ class EvaluationResult implements IEvaluationResult
     /**
      * {@inheritdoc}
      */
-    public function equals(IEvaluationResult $other)
+    public function isAllowed()
     {
-        return $this->result === $other->getResult();
+        return $this->getResult() === IEvaluationResult::ALLOWED;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDenied()
+    {
+        return $this->getResult() === IEvaluationResult::DENIED;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUndefined()
+    {
+        return $this->getResult() === IEvaluationResult::UNDEFINED;
+    }
+
 
     /**
      * {@inheritdoc}

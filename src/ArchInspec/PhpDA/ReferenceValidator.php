@@ -96,10 +96,10 @@ class ReferenceValidator implements ValidatorInterface
     public function isValidBetween(Name $from, Name $to)
     {
         $this->lastResult = $this->inspector->isAllowed($from->toString(), $to->toString());
-        if (!is_null($this->collector) && $this->lastResult->equals(EvaluationResult::denied())) {
+        if (!is_null($this->collector) && $this->lastResult->isDenied()) {
             $this->collector->report(new PolicyViolation($from, $to, $this->lastResult));
         }
-        return $this->lastResult->equals(EvaluationResult::allowed());
+        return $this->lastResult->isAllowed();
     }
 
     /**

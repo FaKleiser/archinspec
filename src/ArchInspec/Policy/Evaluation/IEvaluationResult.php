@@ -20,20 +20,26 @@ interface IEvaluationResult
     const UNDEFINED = 3;
 
     /**
-     * Returns true if the type of the evaluation results are equal.
-     *
-     * E.g. two evaluation results are equal if the are both of type "ALLOWED", for example.
-     *
-     * @param IEvaluationResult $other
-     */
-    public function equals(IEvaluationResult $other);
-
-    /**
      * Returns the result type. The returned integer is a value of the class constants of {@link IEvaluationResult}.
      *
      * @return int code
      */
     public function getResult();
+
+    /**
+     * @return true if the evaluation result is {@link IEvaluationResult#ALLOWED}.
+     */
+    public function isAllowed();
+
+    /**
+     * @return true if the evaluation result is {@link IEvaluationResult#DENIED}.
+     */
+    public function isDenied();
+
+    /**
+     * @return true if the evaluation result is {@link IEvaluationResult#UNDEFINED}.
+     */
+    public function isUndefined();
 
     /**
      * Returns a reasoning message for the policy evaluation result.
