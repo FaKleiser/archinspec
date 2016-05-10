@@ -31,6 +31,7 @@ use ArchInspec\Policy\Evaluation\EvaluationResult;
 use ArchInspec\Policy\Factory\PolicyFactory;
 use ArchInspec\Policy\Factory\PolicyFactoryInterface;
 use ArchInspec\Policy\PolicyInterface;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -82,23 +83,31 @@ class Inspector
         foreach ($yaml as $fqns => $policies) {
             $node = $this->getOrCreateNode($fqns);
             // attach policies to node
-            foreach ($policies as $policy => $options) {
-                $node->attachPolicy($this->factoryPolicy($policy, $options));
+            foreach ($policies as $options) {
+                // get policy name and target
+                if (isset($options['policy'])) {
+                    $policyName = $options['policy'];
+                    $target = null;
+                    if (isset($options['target'])) {
+                        $target = $options['target'];
+                        unset($options['target']);
+                    }
+                    unset($options['policy']);
+                } else {
+                    $policyName = $this->guessPolicyName($options);
+                    $target = $options[$policyName];
+                }
+
+                // policy reasoning
+                $reason = null;
+                if (isset($options['reason'])) {
+                    $reason = $options['reason'];
+                    unset($options['reason']);
+                }
+
+                $node->attachPolicy($this->policyFactory->factory($policyName, $target, $options));
             }
         }
-    }
-
-    /**
-     * Creates an instance of the $name policy with the given $options.
-     *
-     * @param string $name
-     * @param array $options
-     *
-     * @return PolicyInterface
-     */
-    private function factoryPolicy($name, $options)
-    {
-        return $this->policyFactory->factory($name, $options);
     }
 
     /**
@@ -122,6 +131,25 @@ class Inspector
             }
         }
         return $parent;
+    }
+
+    /**
+     * Tries to guess the intended policy name based on the available option keys.
+     *
+     * @param mixed[] $options
+     * @throws \RuntimeException In case the policy cannot be guessed
+     * @return string
+     */
+    private function guessPolicyName($options)
+    {
+        foreach (array_keys($options) as $potentialPolicy) {
+            if ($this->policyFactory->supports($potentialPolicy)) {
+                return $potentialPolicy;
+            }
+        }
+        throw new RuntimeException(sprintf("None of the provided options [%s] refers to a supported policy [%s]!",
+            join(",", array_keys($options)),
+            join(",", $this->policyFactory->supportedPolicies())));
     }
 
     /**
@@ -153,4 +181,5 @@ class Inspector
         }
         return EvaluationResult::undefined();
     }
+
 }

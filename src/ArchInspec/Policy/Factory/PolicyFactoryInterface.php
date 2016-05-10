@@ -29,17 +29,33 @@ use ArchInspec\Policy\PolicyInterface;
 
 /**
  * Used to create {@link PolicyInterface} factories.
- *
- * @package ArchInspec\Policy\Factory
  */
 interface PolicyFactoryInterface
 {
     /**
      * Factories the $name policy with the given $options.
      *
-     * @param string $name
-     * @param mixed $options
+     * @param string $name the name of the policy to create
+     * @param null|string|string[] $target the targets to apply the policy to
+     * @param mixed[] $options
+     *
      * @return PolicyInterface
      */
-    public function factory($name, $options = null);
+    public function factory($name, $target = null, array $options = null);
+
+    /**
+     * Reveals which policies the factory is able to instantiate
+     *
+     * @return string[] a list of policy names supported by this factory.
+     */
+    public function supportedPolicies();
+
+    /**
+     * Determines whether creating the policy $name is supported by this factory.
+     *
+     * @param $name
+     *
+     * @return boolean true if supported
+     */
+    public function supports($name);
 }

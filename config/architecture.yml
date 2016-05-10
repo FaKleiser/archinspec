@@ -1,11 +1,9 @@
 ArchInspec\Command:
-  allow:
-    - Symfony\Component\Console
+  - allow: Symfony\Component\Console
 
 ArchInspec\Node:
-  allow:
-    - ArchInspec\Policy
+  - allow: ArchInspec\Policy
 
 ArchInspec\Policy:
-  deny:
-    - ArchInspec\Node
+  - deny: ArchInspec\Node
+    reason: The node must not use the policy at all costs! This was decided in #43

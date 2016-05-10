@@ -2,7 +2,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 Fabian Keller
+ * Copyright (c) 2016 Fabian Keller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,51 +23,20 @@
  * SOFTWARE.
  */
 
-namespace ArchInspec\Policy;
 
-use ArchInspec\Node\NodeInterface;
+namespace ArchInspec\Policy\Factory;
 
 /**
- * Defines an abstract policy class that takes a set of namespaces as argument.
- *
- * @package ArchInspec\Policy
+ * Implements common methods for a {@link PolicyFactoryInterface}.
  */
-abstract class NamespaceBasedPolicy implements PolicyInterface
+abstract class AbstractPolicyFactory implements PolicyFactoryInterface
 {
-    /** @var string[] namespaces this policy defines */
-    protected $namespaces = [];
-
-    public function __construct($target = [], $options = null)
-    {
-        if (!is_array($target)) {
-            $target = [$target];
-        }
-        $this->namespaces = $target;
-    }
-
-    /**
-     * Returns true if $other is part of $namespace
-     *
-     * @param string $namespace
-     * @param string $other
-     *
-     * @return bool
-     */
-    protected function namespaceContains($namespace, $other)
-    {
-        return strlen($namespace) <= strlen($other) && strpos($other, $namespace) === 0;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function affects(NodeInterface $from, NodeInterface $to)
+    public function supports($name)
     {
-        foreach ($this->namespaces as $namespace) {
-            if ($this->namespaceContains($namespace, $to->getFQName())) {
-                return true;
-            }
-        }
-        return false;
+        return in_array($name, $this->supportedPolicies());
     }
+
 }
