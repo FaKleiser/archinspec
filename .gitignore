@@ -1,5 +1,3 @@
-/vendor/
 .idea/
-bin/
-tests/tmp/
+/vendor/
 tmp/
