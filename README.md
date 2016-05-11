@@ -1,8 +1,8 @@
 # archinspec
 
 ![Stability](https://img.shields.io/badge/stability-alpha-orange.svg)
-[![Packagist](https://img.shields.io/packagist/v/fakeller/archinspec.svg?maxAge=2592000)](https://packagist.org/packages/fakeller/archinspec)
-[![Travis](https://img.shields.io/travis/fakeller/archinspec.svg?maxAge=2592000)](https://travis-ci.org/FaKeller/archinspec)
+[![Packagist](https://img.shields.io/packagist/v/FaKeller/archinspec.svg?maxAge=2592000)](https://packagist.org/packages/FaKeller/archinspec)
+[![Travis](https://img.shields.io/travis/FaKeller/archinspec.svg?maxAge=2592000)](https://travis-ci.org/FaKeller/archinspec)
 
 archinspec is a tool to help you maintain a great architecture for your application.
 You simply define how your architecture should look like and archinspec validates that it actually is as expected.
