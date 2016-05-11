@@ -1,19 +1,29 @@
 {
   "name": "fakeller/archinspec",
-  "description": "Architecture dependency definition language",
-  "type": "library",
+  "type": "project",
+  "description": "Static analysis tool for PHP architectures. Define how your architecture should look like and let archinspec validate it.",
+  "homepage": "https://github.com/FaKeller/archinspec",
   "license": "MIT",
+  "keywords": [
+    "architecture",
+    "dependency",
+    "static",
+    "analysis"
+  ],
   "authors": [
     {
       "name": "Fabian Keller",
       "email": "hello@fabian-keller.de"
     }
   ],
-  "config": {
-    "bin-dir": "bin"
+  "support": {
+    "issues": "https://github.com/FaKeller/archinspec/issues",
+    "source": "https://github.com/FaKeller/archinspec"
   },
   "autoload": {
-    "psr-0": {"": "src/"}
+    "psr-0": {
+      "": "src/"
+    }
   },
   "require": {
     "php": ">=5.5",
@@ -23,5 +33,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0"
-  }
+  },
+  "bin": [
+    "bin/archinspec"
+  ]
 }
