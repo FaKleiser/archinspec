@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Fabian
- * Date: 05.06.2015
- * Time: 19:13
+ * This file is part of the "archinspec" project.
+ *
+ * (c) Fabian Keller <hello@fabian-keller.de>
+ *
+ * For the full copyright and license information, please view the LICENSE 
+ * file that was distributed with this source code.
  */
 
 namespace ArchInspec\Policy\Evaluation;
