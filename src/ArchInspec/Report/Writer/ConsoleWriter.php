@@ -4,7 +4,7 @@
  *
  * (c) Fabian Keller <hello@fabian-keller.de>
  *
- * For the full copyright and license information, please view the LICENSE 
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -38,14 +38,38 @@ class ConsoleWriter implements ReportWriterInterface
             return;
         }
 
-        $this->out->writeln(sprintf("<error>%d policy violations found!</error>", count($report->getViolations())));
-        foreach ($report->getViolations() as $from => $violations) {
+        if ($report->hasMajorViolations()) {
+            $this->out->writeln(sprintf("<error>%d major policy violations found!</error>",
+                count($report->getMajorViolations())));
+            $this->printViolations($report->getMajorViolations());
+        }
+        if ($report->hasMinorViolations()) {
+            $this->out->writeln(sprintf("<error>%d minor policy violations found!</error>",
+                count($report->getMinorViolations())));
+            $this->printViolations($report->getMinorViolations());
+        }
+        if ($report->hasUndefinedViolations()) {
+            $this->out->writeln(sprintf("<error>%d relations have no policy defined!</error>",
+                count($report->getUndefinedViolations())));
+            $this->printViolations($report->getUndefinedViolations());
+        }
+    }
+
+    /**
+     * Prints a map of [from]=>PolicyViolation[] to the console.
+     *
+     * @param PolicyViolation[][] $violationMap
+     */
+    private function printViolations(array $violationMap)
+    {
+        foreach ($violationMap as $from => $violations) {
             $this->out->writeln(sprintf("<comment>%s has %d violations:</comment>", $from, count($violations)));
             foreach ($violations as $violation) {
                 /** @var PolicyViolation $violation */
-                $this->out->writeln(sprintf("  uses <comment>%s</comment>: %s", $violation->getTo(), $violation->getCause()));
-                if (!is_null($violation->getReason())) {
-                    $this->out->writeln(sprintf("  > Reason: %s", $violation->getReason()));
+                $this->out->writeln(sprintf("  uses <comment>%s</comment>: %s", $violation->getTo(),
+                    $violation->getCause()));
+                if ($violation->hasRationale()) {
+                    $this->out->writeln(sprintf("  > Reason: %s", $violation->getRationale()));
                 }
             }
             $this->out->writeln("");

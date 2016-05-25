@@ -82,7 +82,10 @@ class ReferenceValidator implements ValidatorInterface
     {
         $this->lastResult = $this->inspector->isAllowed($from->toString(), $to->toString());
         if (!is_null($this->collector) && $this->lastResult->isDenied()) {
-            $this->collector->report(new PolicyViolation($from, $to, $this->lastResult));
+            $this->collector->major(new PolicyViolation($from, $to, $this->lastResult));
+        }
+        if (!is_null($this->collector) && $this->lastResult->isUndefined()) {
+            $this->collector->undefined(new PolicyViolation($from, $to, $this->lastResult));
         }
         return $this->lastResult->isAllowed();
     }
