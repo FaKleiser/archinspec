@@ -21,7 +21,7 @@ class PolicyViolationReportTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->report = new PolicyViolationReport();
+        $this->report = new PolicyViolationReport(true);
     }
 
     /**
@@ -131,7 +131,7 @@ class PolicyViolationReportTest extends \PHPUnit_Framework_TestCase
 
     public function testHasUndefinedViolations_withIgnoreUndefined_isFalse()
     {
-        $this->report = new PolicyViolationReport(true);
+        $this->report = new PolicyViolationReport(false);
         $this->report->undefined($this->violation('test'));
         $this->assertFalse($this->report->hasUndefinedViolations());
     }

@@ -16,7 +16,7 @@ namespace ArchInspec\Report;
 class PolicyViolationReport implements ViolationCollectorInterface
 {
     /** @var boolean whether or not to ignore undefined violations */
-    private $ignoreUndefined;
+    private $reportUndefined;
 
     /** @var PolicyViolation[][] */
     private $major = [];
@@ -26,9 +26,9 @@ class PolicyViolationReport implements ViolationCollectorInterface
     private $undefined = [];
 
 
-    public function __construct($ignoreUndefined = false)
+    public function __construct($reportUndefined = false)
     {
-        $this->ignoreUndefined = $ignoreUndefined;
+        $this->reportUndefined = $reportUndefined;
     }
 
     /**
@@ -54,7 +54,7 @@ class PolicyViolationReport implements ViolationCollectorInterface
      */
     public function undefined(PolicyViolation $violation)
     {
-        if (!$this->ignoreUndefined) {
+        if ($this->reportUndefined) {
             $this->storeViolation($this->undefined, $violation);
         }
         return $this;

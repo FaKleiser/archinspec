@@ -22,5 +22,7 @@ interface CliMessage
 
     const ARGUMENT_CONFIG = 'Path to yaml configuration file.';
 
+    const OPTION_REPORT_UNDEFINED = 'Report architectural relationships that are not covered by any policy. Use this option to improve your architecture description file.';
+
     const READ_CONFIG_FROM = 'Configuration read from ';
 }

@@ -43,14 +43,14 @@ class ArchInspec
      */
     public function analyze(ReportWriterInterface $writer)
     {
-        $config = $this->createPhpDAConfig();
+        $phpDAConfig = $this->createPhpDAConfig();
 
         $usageFactory = new UsageFactory();
         $usage = $usageFactory->create();
-        $usage->setOptions(['config' => $config]);
+        $usage->setOptions(['config' => $phpDAConfig]);
 
         // collect violation report
-        $report = new PolicyViolationReport();
+        $report = new PolicyViolationReport($this->config->getReportUndefined());
 
         $inspector = new Inspector();
         $inspector->load($this->config->getArchitecture());

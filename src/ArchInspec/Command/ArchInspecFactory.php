@@ -4,7 +4,7 @@
  *
  * (c) Fabian Keller <hello@fabian-keller.de>
  *
- * For the full copyright and license information, please view the LICENSE 
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -12,6 +12,11 @@ namespace ArchInspec\Command;
 
 use Symfony\Component\Console\Application;
 
+/**
+ * Creates the archinspec console application.
+ *
+ * Instantiates a Symfony console application with the {@link InspectCommand} registered.
+ */
 class ArchInspecFactory
 {
     /**
@@ -20,9 +25,7 @@ class ArchInspecFactory
     public function create()
     {
         $app = new Application(CliMessage::NAME, CliMessage::VERSION);
-        $app->setDefaultCommand(CliMessage::COMMAND);
         $app->add($this->createInspectCommand());
-
         return $app;
     }
 

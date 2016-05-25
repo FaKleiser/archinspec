@@ -26,6 +26,8 @@ class AIConfig
     private $architecture;
     /** @var array */
     private $phpDa;
+    /** @var boolean */
+    private $reportUndefined = false;
 
 
     private function __construct(array $config = [])
@@ -40,7 +42,8 @@ class AIConfig
             } elseif (property_exists($this, $key)) {
                 $this->{$key} = $value;
             } else {
-                throw new \RuntimeException(sprintf("Got config key '%s' which is not supported in the config class! As this should not have happened, please file a bug.", $key));
+                throw new \RuntimeException(sprintf("Got config key '%s' which is not supported in the config class! As this should not have happened, please file a bug.",
+                    $key));
             }
         }
     }
@@ -77,7 +80,8 @@ class AIConfig
     public function setSource($source)
     {
         if (!is_readable($source)) {
-            throw new \InvalidArgumentException("The given source path does either not exist or is not readable: " . $source);
+            throw new \InvalidArgumentException("The given source path does either not exist or is not readable: "
+                                                . $source);
         }
         $this->source = realpath($source);
     }
@@ -137,8 +141,29 @@ class AIConfig
     public function setArchitecture($architecture)
     {
         if (!is_readable($architecture)) {
-            throw new \InvalidArgumentException("The given architecture file does not exist or is not readable: " . $architecture);
+            throw new \InvalidArgumentException("The given architecture file does not exist or is not readable: "
+                                                . $architecture);
         }
         $this->architecture = $architecture;
     }
+
+    /**
+     * Returns true if undefined architecture relations should be reported.
+     *
+     * @return boolean
+     */
+    public function getReportUndefined()
+    {
+        return $this->reportUndefined;
+    }
+
+    /**
+     * @param boolean $reportUndefined
+     */
+    public function setReportUndefined($reportUndefined)
+    {
+        $this->reportUndefined = (bool) $reportUndefined;
+    }
+
+
 }

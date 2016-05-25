@@ -33,6 +33,7 @@ class AIConfigValidationTree implements ConfigurationInterface
                 ->scalarNode('source')->end()
                 ->scalarNode('output')->end()
                 ->scalarNode('architecture')->end()
+                ->booleanNode('reportUndefined')->end()
                 ->arrayNode('phpDa')
                     ->children()
                         ->scalarNode('filePattern')->defaultValue('*.php')->end()
