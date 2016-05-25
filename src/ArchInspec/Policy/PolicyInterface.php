@@ -43,5 +43,5 @@ interface PolicyInterface
      *
      * @return null|string
      */
-    public function getReason();
+    public function getRationale();
 }

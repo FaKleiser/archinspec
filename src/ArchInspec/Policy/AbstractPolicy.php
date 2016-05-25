@@ -19,10 +19,10 @@ abstract class AbstractPolicy implements PolicyInterface
     private $targets;
     /** @var mixed[] a map of options */
     private $options;
-    /** @var string the reason why this policy exists */
-    private $reason;
+    /** @var string the rationale WHY this policy exists */
+    private $rationale;
 
-    public function __construct($targets = [], $options = null, $reason = null)
+    public function __construct($targets = [], $options = null, $rationale = null)
     {
         if (!is_array($targets)) {
             $targets = [$targets];
@@ -31,7 +31,7 @@ abstract class AbstractPolicy implements PolicyInterface
         if (!is_null($options)) {
             $this->options = $options;
         }
-        $this->reason = $reason;
+        $this->rationale = $rationale;
     }
 
     /**
@@ -79,9 +79,9 @@ abstract class AbstractPolicy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function getReason()
+    public function getRationale()
     {
-        return $this->reason;
+        return $this->rationale;
     }
 
     /**

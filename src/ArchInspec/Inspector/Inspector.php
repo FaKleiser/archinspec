@@ -82,14 +82,14 @@ class Inspector
                     $target = $options[$policyName];
                 }
 
-                // policy reasoning
-                $reason = null;
-                if (isset($options['reason'])) {
-                    $reason = $options['reason'];
-                    unset($options['reason']);
+                // policy rationale
+                $rationale = null;
+                if (isset($options['rationale'])) {
+                    $rationale = $options['rationale'];
+                    unset($options['rationale']);
                 }
 
-                $node->attachPolicy($this->policyFactory->factory($policyName, $target, $options, $reason));
+                $node->attachPolicy($this->policyFactory->factory($policyName, $target, $options, $rationale));
             }
         }
     }
@@ -163,7 +163,7 @@ class Inspector
             }
             $node = $node->getParent();
         }
-        return EvaluationResult::undefined();
+        return EvaluationResult::undefined("No matching policy was found!");
     }
 
 }

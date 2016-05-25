@@ -62,12 +62,12 @@ class PolicyFactory extends AbstractPolicyFactory
     /**
      * {@inheritdoc}
      */
-    public function factory($name, $target = null, array $options = null, $reason = null)
+    public function factory($name, $target = null, array $options = null, $rationale = null)
     {
         if (!$this->supports($name)) {
             throw new \RuntimeException(sprintf("Factory for policies of type %s is not defined!", $name));
         }
-        return $this->factories[$name]->factory($name, $target, $options, $reason);
+        return $this->factories[$name]->factory($name, $target, $options, $rationale);
     }
 
     /**

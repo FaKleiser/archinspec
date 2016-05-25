@@ -4,7 +4,7 @@
  *
  * (c) Fabian Keller <hello@fabian-keller.de>
  *
- * For the full copyright and license information, please view the LICENSE 
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -20,19 +20,20 @@ class PolicyViolation
     /** @var Name */
     private $to;
     /** @var IEvaluationResult */
-    private $cause;
+    private $evaluation;
 
     /**
      * PolicyViolation constructor.
+     *
      * @param Name $from
      * @param Name $to
-     * @param IEvaluationResult $cause
+     * @param IEvaluationResult $evaluation
      */
-    public function __construct(Name $from, Name $to, IEvaluationResult $cause)
+    public function __construct(Name $from, Name $to, IEvaluationResult $evaluation)
     {
         $this->from = $from;
         $this->to = $to;
-        $this->cause = $cause;
+        $this->evaluation = $evaluation;
     }
 
     /**
@@ -58,7 +59,17 @@ class PolicyViolation
      */
     public function getCause()
     {
-        return $this->cause->getMessage();
+        return $this->evaluation->getMessage();
+    }
+
+    /**
+     * Checks whether there is a reason describing why the policy exists at all.
+     *
+     * @return boolean true if there is a reason
+     */
+    public function hasRationale()
+    {
+        return !is_null($this->evaluation->causedBy()) && !empty($this->evaluation->causedBy()->getRationale());
     }
 
     /**
@@ -68,8 +79,8 @@ class PolicyViolation
      *
      * @return null|string
      */
-    public function getReason()
+    public function getRationale()
     {
-        return $this->cause->causedBy()->getReason();
+        return $this->evaluation->causedBy()->getRationale();
     }
 }
