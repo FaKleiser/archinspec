@@ -1,5 +1,5 @@
 # path to the architecture definition file
-architecture: 'config/architecture.yml'
+architecture: '.qa/architecture.yml'
 # source folder of the program to analyze
 source: 'src'
 # output folder for architecture analysis results

@@ -140,10 +140,6 @@ class AIConfig
      */
     public function setArchitecture($architecture)
     {
-        if (!is_readable($architecture)) {
-            throw new \InvalidArgumentException("The given architecture file does not exist or is not readable: "
-                                                . $architecture);
-        }
         $this->architecture = $architecture;
     }
 

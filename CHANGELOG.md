@@ -7,7 +7,14 @@ This file keeps track of all changes to this project. This project follows [sema
 
 ### Added
 - Add `--reportUndefined` option to CLI to report architectural relations not covered by a policy
-- Distinguish between minor and major severities for architecture violations  
+- Distinguish between minor and major severities for architecture violations
+- Improved archinspec console application messages and input validation
+
+### Changed
+- Moved default location for architecture definition files to .qa/architecture.yml
+
+### Fixed
+- Failed to load empty architecture definition file
 
 
 ## v0.0.2 - 2016-05-11
