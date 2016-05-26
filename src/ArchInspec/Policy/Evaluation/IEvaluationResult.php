@@ -12,6 +12,9 @@ namespace ArchInspec\Policy\Evaluation;
 
 use ArchInspec\Policy\PolicyInterface;
 
+/**
+ * Represents the evaluation result of defined policies for a specific architecture relation.
+ */
 interface IEvaluationResult
 {
     /** Represents allowed policy evaluation */
@@ -29,17 +32,17 @@ interface IEvaluationResult
     public function getResult();
 
     /**
-     * @return true if the evaluation result is {@link IEvaluationResult#ALLOWED}.
+     * @return boolean true if the evaluation result is {@link IEvaluationResult#ALLOWED}.
      */
     public function isAllowed();
 
     /**
-     * @return true if the evaluation result is {@link IEvaluationResult#DENIED}.
+     * @return boolean true if the evaluation result is {@link IEvaluationResult#DENIED}.
      */
     public function isDenied();
 
     /**
-     * @return true if the evaluation result is {@link IEvaluationResult#UNDEFINED}.
+     * @return boolean true if the evaluation result is {@link IEvaluationResult#UNDEFINED}.
      */
     public function isUndefined();
 

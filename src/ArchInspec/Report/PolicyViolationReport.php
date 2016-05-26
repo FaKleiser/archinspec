@@ -63,7 +63,7 @@ class PolicyViolationReport implements ViolationCollectorInterface
     /**
      * Stores the violation as a map with the "from" part of the violation being used as key.
      *
-     * @param PolicyViolation[] $storage violation map
+     * @param PolicyViolation[][] $storage violation map
      * @param PolicyViolation $violation
      */
     private function storeViolation(array &$storage, PolicyViolation $violation)

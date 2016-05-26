@@ -28,7 +28,7 @@ class Node implements NodeInterface
     /** @var NodeInterface[] children of this node */
     private $children = [];
 
-    /** @var PolicyInterface */
+    /** @var PolicyInterface[] */
     private $policies = [];
 
     /**

@@ -17,7 +17,7 @@ class ConstructorFactory extends AbstractPolicyFactory
 {
     /** @var string */
     private $policyClassName;
-    /** @var string */
+    /** @var string[] */
     private $names;
 
     /**
