@@ -79,10 +79,6 @@ class AIConfig
      */
     public function setSource($source)
     {
-        if (!is_readable($source)) {
-            throw new \InvalidArgumentException("The given source path does either not exist or is not readable: "
-                                                . $source);
-        }
         $this->source = realpath($source);
     }
 
@@ -101,9 +97,6 @@ class AIConfig
      */
     public function setOutput($output)
     {
-        if (!is_dir($output)) {
-            throw new \InvalidArgumentException("The given output path does not exist: " . $output);
-        }
         $this->output = realpath($output);
     }
 
