@@ -8,8 +8,8 @@ checks:
 
 tools:
     external_code_coverage:
-        timeout: 1200
-        runs: 3
+        timeout: 900
+        runs: 2
     php_code_coverage: true
     php_loc:
         enabled: true
