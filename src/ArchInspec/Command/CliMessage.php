@@ -14,7 +14,7 @@ interface CliMessage
 {
     // // COMMAND INFO // //
 
-    const VERSION = 'v0.0.2';
+    const VERSION = 'v0.0.3';
 
     const NAME = 'ArchInspec by Fabian Keller';
 

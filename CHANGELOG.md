@@ -5,6 +5,11 @@ This file keeps track of all changes to this project. This project follows [sema
 
 ## [UNRELEASED]
 
+No changes yet.
+
+
+## v0.0.3 - 2016-05-26
+
 ### Added
 - Add `--reportUndefined` option to CLI to report architectural relations not covered by a policy
 - Distinguish between minor and major severities for architecture violations
