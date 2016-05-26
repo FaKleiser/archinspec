@@ -62,6 +62,9 @@ class Inspector
             $adl = file_get_contents($adl);
         }
         $yaml = Yaml::parse($adl);
+        if (!is_array($yaml)) {
+            return;
+        }
 
         // create nodes
         foreach ($yaml as $fqns => $policies) {
